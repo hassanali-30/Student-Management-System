@@ -45,6 +45,5 @@ g++ -o student student.cpp
 ./student
 Student-Management/
 ├── student.cpp       # Main source code
-├── data.txt          # Binary file storing student records
 ├── README.md         # Project documentation
 └── LICENSE           # Open-source license
