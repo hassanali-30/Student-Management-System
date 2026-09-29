@@ -1,49 +1,44 @@
-# 🎓 Student Record Management System (C++)
+# Student Record Management System
 
-This C++ program allows users to manage student records including adding, displaying, updating, deleting, and viewing all records. It uses **binary file handling** to store data persistently in `data.txt`.
+A menu-driven C++ application for storing and managing student records. Records are persisted using binary file I/O, allowing data to remain available between program runs.
 
----
+## Features
 
-## 🔍 Features
+- Add student records
+- Display an individual student's mark sheet
+- Update student details
+- Delete a record by roll number
+- Display all stored records
+- Store marks for five subjects
+- Use a temporary file during update and delete operations
 
-- ✅ Add new student records  
-- ✅ View individual student mark sheet  
-- ✅ Update existing student details  
-- ✅ Delete student by roll number  
-- ✅ Display all student records  
-- ✅ File-based persistent storage using binary I/O  
-
----
-
-## 📚 What You'll Learn
-
-- File handling with binary files  
-- Struct usage in C++  
-- Input/output stream operations (`fstream`)  
-- Data serialization using `write()` and `read()`  
-- Menu-driven program design  
-
----
-
-## 🛠️ How It Works
-
-### 1. **Data Input**
-- Takes student name, roll number, and marks for 5 subjects.
-
-### 2. **Binary File Handling**
-- Stores data in `data.txt` using binary write/read.
-
-### 3. **Operations**
-- Add, view, delete, update records using file streams and temporary files for safe update/delete.
-
----
-
-## ▶️ How to Compile and Run
+## Build and Run
 
 ```bash
-g++ -o student student.cpp
+g++ -std=c++17 -O2 -Wall -Wextra student.cpp -o student
 ./student
-Student-Management/
-├── student.cpp       # Main source code
-├── README.md         # Project documentation
-└── LICENSE           # Open-source license
+```
+
+On Windows, run:
+
+```text
+student.exe
+```
+
+The application creates or updates its binary data file in the directory from which it is run.
+
+## Project Structure
+
+```text
+student.cpp   # Main C++ source
+README.md     # Project documentation
+License       # License information
+```
+
+## Concepts Demonstrated
+
+- C++ structures
+- Binary `fstream` input and output
+- Record serialization with `read()` and `write()`
+- Menu-driven program design
+- Safe replacement of records with a temporary file
