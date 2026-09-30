@@ -1,6 +1,6 @@
 # Student Record Management System
 
-A menu-driven C++ application for storing and managing student records. Records are persisted using binary file I/O, allowing data to remain available between program runs.
+A menu-driven C++ application for storing and managing student records. Records are persisted in a portable text file, allowing data to remain available between program runs.
 
 ## Features
 
@@ -10,7 +10,7 @@ A menu-driven C++ application for storing and managing student records. Records 
 - Delete a record by roll number
 - Display all stored records
 - Store marks for five subjects
-- Use a temporary file during update and delete operations
+- Use a temporary file during update and delete operations without losing records
 
 ## Build and Run
 
@@ -38,7 +38,7 @@ License       # License information
 ## Concepts Demonstrated
 
 - C++ structures
-- Binary `fstream` input and output
-- Record serialization with `read()` and `write()`
+- Text-based `fstream` input and output with quoted names
+- Portable record serialization with quoted text fields
 - Menu-driven program design
 - Safe replacement of records with a temporary file
