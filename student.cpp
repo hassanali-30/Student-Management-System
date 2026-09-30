@@ -1,5 +1,8 @@
-#include <iostream>
+#include <cstdio>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <limits>
 #include <string>
 using namespace std;
 
@@ -11,6 +14,10 @@ struct Student {
 
 void addStudent() {
     ofstream fout("data.txt", ios::app);
+    if (!fout) {
+        cerr << "Unable to open data.txt for writing." << endl;
+        return;
+    }
     Student s;
     cout << "Enter student name: ";
     getline(cin, s.name);
@@ -20,7 +27,9 @@ void addStudent() {
     for (int i = 0; i < 5; i++) {
         cin >> s.marks[i];
     }
-    fout.write((char*)&s, sizeof(s));
+    fout << quoted(s.name) << ' ' << s.rollNo;
+    for (float mark : s.marks) fout << ' ' << mark;
+    fout << '\n';
     fout.close();
     cout << "Student added successfully!" << endl;
 }
@@ -32,7 +41,8 @@ void displayStudent() {
     cin >> rollNo;
     Student s;
     bool found = false;
-    while (fin.read((char*)&s, sizeof(s))) {
+    while (fin >> quoted(s.name) >> s.rollNo) {
+        for (float &mark : s.marks) fin >> mark;
         if (s.rollNo == rollNo) {
             found = true;
             cout << "Name: " << s.name << endl;
@@ -59,9 +69,12 @@ void deleteStudent() {
     cin >> rollNo;
     Student s;
     bool found = false;
-    while (fin.read((char*)&s, sizeof(s))) {
+    while (fin >> quoted(s.name) >> s.rollNo) {
+        for (float &mark : s.marks) fin >> mark;
         if (s.rollNo != rollNo) {
-            fout.write((char*)&s, sizeof(s));
+            fout << quoted(s.name) << ' ' << s.rollNo;
+            for (float mark : s.marks) fout << ' ' << mark;
+            fout << '\n';
         } else {
             found = true;
         }
@@ -69,7 +82,7 @@ void deleteStudent() {
     fin.close();
     fout.close();
     remove("data.txt");
-    rename("temp.txt", "students.txt");
+    rename("temp.txt", "data.txt");
     if (found) {
         cout << "Student deleted successfully!" << endl;
     } else {
@@ -79,28 +92,33 @@ void deleteStudent() {
 
 void updateStudent() {
     ifstream fin("data.txt");
-    ofstream fout("data.txt");
+    ofstream fout("temp.txt");
     int rollNo;
     cout << "Enter roll number: ";
     cin >> rollNo;
     Student s;
     bool found = false;
-    while (fin.read((char*)&s, sizeof(s))) {
+    while (fin >> quoted(s.name) >> s.rollNo) {
+        for (float &mark : s.marks) fin >> mark;
         if (s.rollNo != rollNo) {
-            fout.write((char*)&s, sizeof(s));
+            fout << quoted(s.name) << ' ' << s.rollNo;
+            for (float mark : s.marks) fout << ' ' << mark;
+            fout << '\n';
         } else {
             found = true;
             cout << "Enter new marks in 5 subjects: ";
             for (int i = 0; i < 5; i++) {
                 cin >> s.marks[i];
             }
-            fout.write((char*)&s, sizeof(s));
+            fout << quoted(s.name) << ' ' << s.rollNo;
+            for (float mark : s.marks) fout << ' ' << mark;
+            fout << '\n';
         }
     }
     fin.close();
     fout.close();
     remove("data.txt");
-    rename("data.txt", "students.txt");
+    rename("temp.txt", "data.txt");
     if (found) {
         cout << "Student updated successfully!" << endl;
     } else {
@@ -111,7 +129,8 @@ void updateStudent() {
 void showAllStudents() {
     ifstream fin("data.txt");
     Student s;
-    while (fin.read((char*)&s, sizeof(s))) {
+    while (fin >> quoted(s.name) >> s.rollNo) {
+        for (float &mark : s.marks) fin >> mark;
         cout << "Name: " << s.name << endl;
         cout << "Roll No: " << s.rollNo << endl;
         cout << "Marks: ";
@@ -133,8 +152,13 @@ int main() {
         cout << "4. Update an individual student record" << endl;
         cout << "5. Show all students record" << endl;
         cout << "6. Exit" << endl;
-        cin >> choice;
-        cin.ignore();
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid choice!" << endl;
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice) {
             case 1:
                 addStudent();
