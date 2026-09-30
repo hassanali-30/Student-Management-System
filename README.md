@@ -25,7 +25,7 @@ On Windows, run:
 student.exe
 ```
 
-The application creates or updates its binary data file in the directory from which it is run.
+The application creates or updates its text data file in the directory from which it is run.
 
 ## Project Structure
 
